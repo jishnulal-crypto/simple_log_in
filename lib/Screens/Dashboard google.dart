@@ -16,6 +16,7 @@ class ScreenGoogleDashboard extends StatefulWidget {
 
 class _ScreenGoogleDashboardState extends State<ScreenGoogleDashboard> {
   // String? username;
+  final user = FirebaseAuth.instance.currentUser!;
 
   @override
   @override
@@ -35,12 +36,16 @@ class _ScreenGoogleDashboardState extends State<ScreenGoogleDashboard> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  "Welcome \n",
+                  "Welcome \n" + user.displayName!,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
+                ),
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: NetworkImage(user.photoURL!),
                 ),
                 ElevatedButton(
                     style:
@@ -88,7 +93,7 @@ class _ScreenGoogleDashboardState extends State<ScreenGoogleDashboard> {
                                 ],
                               ));
                     },
-                    child: Text("Log out "))
+                    child: Text("Log out"))
               ],
             ),
           ),
