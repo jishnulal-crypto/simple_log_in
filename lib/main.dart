@@ -5,14 +5,20 @@ import 'package:flutter/material.dart';
 
 import 'Screens/Login Page.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'firebase_options.dart';
+import 'model/cart mode.dart';
 
 const SAVE_KEY_NAME = 'userLoggedIn';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Hive.initFlutter();
+  if (!Hive.isAdapterRegistered(AddtoCartAdapter().typeId)) {
+    Hive.registerAdapter(AddtoCartAdapter());
+  }
   runApp(const MyApp());
 }
 

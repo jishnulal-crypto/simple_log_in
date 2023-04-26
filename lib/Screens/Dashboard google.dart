@@ -2,7 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_login/Screens/Purcahse.dart';
+import 'package:simple_login/Screens/cart.dart';
 
+import '../db/functions/dbfunctions.dart';
 import 'Login Page.dart';
 
 class ScreenGoogleDashboard extends StatefulWidget {
@@ -21,84 +24,102 @@ class _ScreenGoogleDashboardState extends State<ScreenGoogleDashboard> {
   @override
   @override
   Widget build(BuildContext context) {
+    getCartData();
     return Scaffold(
       appBar: AppBar(
-        actions: [],
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return ScreenCart();
+                }));
+              },
+              icon: Icon(Icons.shopping_cart)),
+          IconButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                          title: Text(
+                            "Log out",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 18),
+                          ),
+                          // title: Text("Log out"),
+                          content: Text(
+                            "Log out of your account",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400, fontSize: 14),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () async {
+                                await SignOut(ctx);
+                              },
+                              child: Text(
+                                "Log out",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 14),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(ctx).pop();
+                              },
+                              child: Text(
+                                "No",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 14),
+                              ),
+                            ),
+                          ],
+                        ));
+              },
+              icon: Icon(Icons.logout))
+        ],
       ),
       body: SafeArea(
-        child: Center(
-          child: Container(
-            height: 300,
-            width: 300,
-            decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(60)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "Welcome \n" + user.displayName!,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-                CircleAvatar(
-                  radius: 40,
-                  backgroundImage: NetworkImage(user.photoURL!),
-                ),
-                ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                                title: Text(
-                                  "Log out",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18),
-                                ),
-                                // title: Text("Log out"),
-                                content: Text(
-                                  "Log out of your account",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () async {
-                                      await SignOut(ctx);
-                                    },
-                                    child: Text(
-                                      "Log out",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14),
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(ctx).pop();
-                                    },
-                                    child: Text(
-                                      "No",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14),
-                                    ),
-                                  ),
-                                ],
-                              ));
-                    },
-                    child: Text("Log out"))
-              ],
-            ),
-          ),
-        ),
-      ),
+          child: ListView(
+        physics: const BouncingScrollPhysics(),
+        children: [
+          Text("Welcome"),
+          Text("Items"),
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: 6,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    // childAspectRatio: 1,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
+                    crossAxisCount: 2,
+                    mainAxisExtent: 200),
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ScreenPurcahase(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        child: Center(child: Text("Product ${index + 1}")),
+                        decoration: BoxDecoration(
+                            color: Colors.lightBlue,
+                            borderRadius: BorderRadius.circular(30)),
+                      ),
+                    ),
+                  );
+                }),
+          )
+        ],
+      )),
     );
   }
 

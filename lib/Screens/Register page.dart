@@ -22,125 +22,120 @@ class _ScreenRegisterState extends State<ScreenRegister> {
       body: SafeArea(
           child: Form(
         key: _formKey,
-        child: Container(
-          height: double.infinity,
-          color: Colors.yellow[200],
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 100,
+        child: ListView(
+          children: [
+            SizedBox(
+              height: 100,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 2 - 50),
+              child: FlutterLogo(
+                size: 100,
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width / 2 - 50),
-                child: FlutterLogo(
-                  size: 100,
-                ),
-              ),
+            ),
 
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Text("Name"),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              // Note: Same code is applied for the TextFormField as well
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your name";
-                    } else {
-                      return null;
-                    }
-                  },
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Text("Name"),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            // Note: Same code is applied for the TextFormField as well
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your name";
+                  } else {
+                    return null;
+                  }
+                },
+                controller: nameController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Text("Email"),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your email";
-                    } else {
-                      return null;
-                    }
-                  },
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Text("Email"),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your email";
+                  } else {
+                    return null;
+                  }
+                },
+                controller: emailController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 15,
-              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
 
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Text("Password"),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your Password";
-                    } else {
-                      return null;
-                    }
-                  },
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Text("Password"),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your Password";
+                  } else {
+                    return null;
+                  }
+                },
+                controller: passwordController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 15,
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 2 - 100),
+              child: SizedBox(
+                width: 200,
+                child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        saveDataToStorage(context);
+                      }
+                    },
+                    child: Text("Register")),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width / 2 - 100),
-                child: SizedBox(
-                  width: 200,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          saveDataToStorage(context);
-                        }
-                      },
-                      child: Text("Register")),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       )),
     );
