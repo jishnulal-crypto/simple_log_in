@@ -123,20 +123,22 @@ class _ScreenPurcahaseState extends State<ScreenPurcahase> {
             const SizedBox(
               height: 10,
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: Text("Location"),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
             Padding(
               padding: const EdgeInsets.only(left: 20),
-              child: Text(currentLocation),
+              child: Row(
+                children: const [
+                  Text("Cash on delivery only"),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Icon(
+                    Icons.done,
+                    color: Colors.green,
+                  )
+                ],
+              ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+
             // Padding(
             //   padding: const EdgeInsets.symmetric(horizontal: 20),
             //   child: ElevatedButton(
@@ -155,7 +157,6 @@ class _ScreenPurcahaseState extends State<ScreenPurcahase> {
                     if (_formKey.currentState!.validate() || _lat.isNotEmpty) {
                       placeOrderbutton(context);
                     } else {
-                      print("hai");
                       showDialog(
                           context: context,
                           builder: (ctx) => AlertDialog(
