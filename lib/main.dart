@@ -17,9 +17,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Hive.initFlutter();
-  if (!Hive.isAdapterRegistered(AddtoCartAdapter().typeId)) {
-    Hive.registerAdapter(AddtoCartAdapter());
-  }
+  // if (!Hive.isAdapterRegistered(AddtoCartAdapter().typeId)) {
+  //   Hive.registerAdapter(AddtoCartAdapter());
+  // }
   runApp(const MyApp());
 }
 

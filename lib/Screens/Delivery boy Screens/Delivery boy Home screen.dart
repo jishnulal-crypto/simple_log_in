@@ -20,31 +20,23 @@ class _ScreenHomeDeliveryState extends State<ScreenHomeDelivery> {
         children: [
           Text("All Orders"),
           Container(
-            height: MediaQuery.of(context).size.height,
-            child: ValueListenableBuilder(
-              valueListenable: cartListNotifier,
-              builder:
-                  (BuildContext ctx, List<AddtoCart> cartList, Widget? child) {
-                return ListView.separated(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: cartList.length,
-                  separatorBuilder: (context, index) {
-                    return Divider();
-                  },
-                  itemBuilder: (context, index) {
-                    final data = cartList[index];
-                    return Card(
-                        child: ListTile(
-                      title: Text(data.name),
-                      leading: Icon(Icons.shopping_cart),
-                      subtitle: Text(data.location),
-                    ));
-                  },
-                );
-              },
-            ),
-          )
+              height: MediaQuery.of(context).size.height,
+              child: ValueListenableBuilder<List<AddtoCart>>(
+                valueListenable: cartListNotifier,
+                builder: (context, cartList, child) {
+                  return ListView.builder(
+                    itemCount: cartList.length,
+                    itemBuilder: (context, index) {
+                      final data = cartList[index];
+                      return ListTile(
+                        title: Text(data.name),
+                        subtitle: Text(data.location),
+                        trailing: Text(''),
+                      );
+                    },
+                  );
+                },
+              ))
         ],
       ),
     );
