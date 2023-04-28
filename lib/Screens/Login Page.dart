@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_login/Screens/Delivery%20boy%20Screens/Delivery%20boy%20Home%20screen.dart';
 
 import 'package:simple_login/Screens/Register%20page.dart';
 
@@ -16,10 +17,20 @@ class ScreenLogin extends StatefulWidget {
 }
 
 class _ScreenLoginState extends State<ScreenLogin> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passWordController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   late String? email;
   late String? password;
   late String? name;
+
+  final user = "user";
+  final delivery = "delivery";
+  final passwordlogin = "qwerty";
+
+  String? newuser;
+
   Future checkData() async {
     final sharedPref = await SharedPreferences.getInstance();
     email = sharedPref.getString('useremail');
@@ -76,7 +87,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20),
-              child: Text("Email"),
+              child: Text("User name"),
             ),
             SizedBox(
               height: 15,
@@ -85,12 +96,14 @@ class _ScreenLoginState extends State<ScreenLogin> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextFormField(
                 validator: (value) {
-                  if (value != email) {
-                    return "Please check your email";
+                  // if (value != email) {
+                  if (value == null || value.isEmpty) {
+                    return "Please check your username";
                   } else {
                     return null;
                   }
                 },
+                controller: usernameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -112,12 +125,12 @@ class _ScreenLoginState extends State<ScreenLogin> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextFormField(
                 validator: (value) {
-                  if (value != password) {
+                  if (value != passwordlogin) {
+                    // if (value != password) {
                     return "password is invalid";
-                  } else {
-                    return null;
                   }
                 },
+                controller: passWordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -144,11 +157,26 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => ScreenGoogleDashboard(),
-                          ),
-                        );
+                        if (usernameController.text == user) {
+                          print("hai");
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => ScreenGoogleDashboard(),
+                            ),
+                          );
+                        } else if (usernameController.text == delivery) {
+                          print("hello");
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => ScreenHomeDelivery(),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("user not found")));
+                        }
+                      } else {
+                        print("error");
                       }
                     },
                     child: Text("Log in")),
@@ -171,48 +199,48 @@ class _ScreenLoginState extends State<ScreenLogin> {
             SizedBox(
               height: 15,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width / 2 - 125),
-              child: GestureDetector(
-                onTap: () async {
-                  await signInwithGoogle();
+            //   Padding(
+            //     padding: EdgeInsets.symmetric(
+            //         horizontal: MediaQuery.of(context).size.width / 2 - 125),
+            //     child: GestureDetector(
+            //       onTap: () async {
+            //         await signInwithGoogle();
 
-                  if (mounted) {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => ScreenGoogleDashboard(),
-                    ));
-                  }
-                },
-                child: Container(
-                  height: 60,
-                  width: 250,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.green,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset(
-                        "assets/icons/google.png",
-                        fit: BoxFit.cover,
-                      ),
-                      Text(
-                        "Sign in with google",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white),
-                      ),
-                      SizedBox(
-                        width: 2,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
+            //         if (mounted) {
+            //           Navigator.of(context).pushReplacement(MaterialPageRoute(
+            //             builder: (context) => ScreenGoogleDashboard(),
+            //           ));
+            //         }
+            //       },
+            //       child: Container(
+            //         height: 60,
+            //         width: 250,
+            //         decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(15),
+            //           color: Colors.green,
+            //         ),
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             Image.asset(
+            //               "assets/icons/google.png",
+            //               fit: BoxFit.cover,
+            //             ),
+            //             Text(
+            //               "Sign in with google",
+            //               style: TextStyle(
+            //                   fontSize: 16,
+            //                   fontWeight: FontWeight.w400,
+            //                   color: Colors.white),
+            //             ),
+            //             SizedBox(
+            //               width: 2,
+            //             )
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //   )
           ],
         ),
       )),

@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:simple_login/Screens/cart.dart';
@@ -18,6 +16,8 @@ class ScreenPurcahase extends StatefulWidget {
 
 class _ScreenPurcahaseState extends State<ScreenPurcahase> {
   final _formKey = GlobalKey<FormState>();
+
+  bool isLoading = false;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -151,53 +151,27 @@ class _ScreenPurcahaseState extends State<ScreenPurcahase> {
               height: 10,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(fixedSize: Size(100, 50)),
                   onPressed: () {
                     if (_formKey.currentState!.validate() || _lat.isNotEmpty) {
                       placeOrderbutton(context);
                     } else {
-                      showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                                title: Text(
-                                  "Error",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18),
-                                ),
-                                // title: Text("Log out"),
-                                content: Text(
-                                  "please give your location",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(ctx).pop();
-                                    },
-                                    child: Text(
-                                      "Ok",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14),
-                                    ),
-                                  ),
-                                ],
-                              ));
-
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //     SnackBar(content: Text("Add your location")));
-                    }
+                      print("location error");
+                    } // ScaffoldMessenger.of(context).showSnackBar(
+                    //     SnackBar(content: Text("Add your location")));
 
                     // Navigator.of(context)
                     //     .pushReplacement(MaterialPageRoute(builder: (context) {
                     //   return ScreenCart();
                     // }));
                   },
-                  child: const Text("Place Order")),
+                  child: isLoading == true
+                      ? CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : Text("Place Order")),
             )
           ],
         ),
@@ -206,10 +180,19 @@ class _ScreenPurcahaseState extends State<ScreenPurcahase> {
   }
 
   Future placeOrderbutton(BuildContext context) async {
+    // setState(() {
+    //   isLoading == true;
+    // });
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: ((ctx) => Center(child: CircularProgressIndicator())));
+
     await _getCurrentLocation().then((value) {
       _lat = '${value.latitude}';
       _long = '${value.longitude}';
     });
+    print("lat : ${_lat} , long : ${_long}");
     final cityName = await getCityName(
         double.parse(_lat), double.parse(_long)); // San Francisco
 
@@ -228,7 +211,10 @@ class _ScreenPurcahaseState extends State<ScreenPurcahase> {
         long: _long,
         location: currentLocation);
     addCartData(await _cartData);
-    await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+    Navigator.of(context).pop();
+
+    await Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) {
       return ScreenCart();
     }));
   }
