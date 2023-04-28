@@ -19,12 +19,17 @@ class ScreenGoogleDashboard extends StatefulWidget {
 
 class _ScreenGoogleDashboardState extends State<ScreenGoogleDashboard> {
   // String? username;
-  final user = FirebaseAuth.instance.currentUser!;
+  // final user = FirebaseAuth.instance.currentUser!;
 
   @override
+  void initState() {
+    getCartData();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    getCartData();
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -54,9 +59,15 @@ class _ScreenGoogleDashboardState extends State<ScreenGoogleDashboard> {
                           ),
                           actions: [
                             TextButton(
-                              onPressed: () async {
-                                await SignOut(ctx);
+                              onPressed: () {
+                                Navigator.of(ctx).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (ctx) => ScreenLogin()),
+                                    (route) => false);
                               },
+                              // async {
+                              //   await SignOut(ctx);
+                              // },
                               child: Text(
                                 "Log out",
                                 style: TextStyle(
@@ -104,7 +115,7 @@ class _ScreenGoogleDashboardState extends State<ScreenGoogleDashboard> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => ScreenPurcahase(),
+                            builder: (context) => const ScreenPurcahase(),
                           ),
                         );
                       },
