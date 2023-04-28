@@ -75,16 +75,34 @@ class _ScreenHomeDeliveryState extends State<ScreenHomeDelivery> {
               },
               icon: Icon(Icons.logout))
         ]),
-        body: Column(
+        body: ListView(
           children: [
-            Text(DateTime.now().toString()),
-            Container(
-              child: Center(
-                  child: ElevatedButton(
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ScreenDeleveryOrders())),
-                child: Text("Orders"),
-              )),
+            SizedBox(
+              height: 25,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 35),
+              child: Text("Todays order"),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Container(
+                height: 250,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Colors.green[100],
+                    borderRadius: BorderRadius.circular(40),
+                    border: Border.all(color: Colors.green)),
+                child: Center(
+                    child: ElevatedButton(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ScreenDeleveryOrders())),
+                  child: Text("Orders"),
+                )),
+              ),
             )
           ],
         ));
