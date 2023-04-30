@@ -37,6 +37,7 @@ class _ScreenDeleveryOrdersState extends State<ScreenDeleveryOrders> {
                             onPressed: () async {
                               launchMapsUrl();
                               // await _openMap(data.lat, data.long);
+                              openMap(data.lat, data.long);
                             },
                             icon: Icon(
                               Icons.near_me,
@@ -67,5 +68,15 @@ class _ScreenDeleveryOrdersState extends State<ScreenDeleveryOrders> {
     await canLaunchUrlString(googleUrl)
         ? await launchUrlString(googleUrl)
         : throw "could not launch $googleUrl";
+  }
+
+  Future<void> openMap(String latitude, String longitude) async {
+    String googleUrl =
+        'https://www.google.com/maps/search/?api=1&query=${double.parse(latitude)},${double.parse(longitude)}';
+    if (await canLaunch(googleUrl)) {
+      await launch(googleUrl);
+    } else {
+      throw 'Could not open the map.';
+    }
   }
 }
